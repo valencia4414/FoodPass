@@ -32,12 +32,20 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Rutas protegidas
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard',      [DashboardController::class,    'index'])->name('dashboard');
+    
+    // --- RF05: Historial ---
     Route::get('/historial',      [HistorialController::class,    'index'])->name('historial');
+    Route::get('/historial/{id}', [HistorialController::class,    'show'])->name('historial.show'); // Detalle del pedido
+    
     Route::get('/metodos-pago',   [MetodosPagoController::class,  'index'])->name('metodos-pago');
     Route::get('/menu-digital',   [MenuDigitalController::class,  'index'])->name('menu-digital');
     Route::get('/perfil',         [PerfilController::class,       'index'])->name('perfil');
     Route::put('/perfil',         [PerfilController::class,       'update'])->name('perfil.update');
+    
+    // --- RF04: Canje y Beneficio SENA ---
     Route::get('/canje',          [CanjeController::class,        'index'])->name('canje');
+    Route::post('/canje',         [CanjeController::class,        'store'])->name('canje.store'); // Para procesar el canje
+    
     Route::get('/harvest-ledger', [HarvestLedgerController::class,'index'])->name('harvest-ledger');
 
     // ── RF04/RF05/RF06 – Administración de Restaurantes y Platillos ──────────
@@ -55,4 +63,5 @@ Route::middleware('auth')->group(function () {
             [PlatilloController::class, 'toggleDisponibilidad']
         )->name('platillos.disponibilidad');
     });
+
 });
