@@ -64,4 +64,11 @@ Route::middleware('auth')->group(function () {
         )->name('platillos.disponibilidad');
     });
 
+    //RF07,RF08,RF09
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/pedidos', [PedidoController::class, 'index']);             // Punto 89
+    Route::post('/pedidos', [PedidoController::class, 'store']);            // Punto 86
+    Route::get('/pedidos/{id}', [PedidoController::class, 'show']);         // Punto 88
+    Route::patch('/pedidos/{id}/estado', [PedidoController::class, 'update']); // Punto 87
+
 });
