@@ -19,7 +19,8 @@ class MenuDigitalController extends Controller
         // Filtro de categoría desde el tab activo
         $categoriaActiva = $request->get('categoria', 'todos');
 
-        $query = Platillo::where('disponible', true);
+        // Tarea 9: Quitamos "where disponible = true" para poder mostrar platillos AGOTADOS
+        $query = Platillo::query();
 
         if ($restaurante) {
             $query->where('restaurante_id', $restaurante->id);
@@ -32,8 +33,7 @@ class MenuDigitalController extends Controller
         $platillos = $query->orderBy('categoria')->orderBy('nombre')->get();
 
         // Platillo hero: primer plato fuerte disponible
-        $platilloHero = Platillo::where('disponible', true)
-            ->where('categoria', 'plato_fuerte')
+        $platilloHero = Platillo::where('categoria', 'plato_fuerte')
             ->when($restaurante, fn($q) => $q->where('restaurante_id', $restaurante->id))
             ->first();
 
