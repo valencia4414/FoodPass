@@ -21,6 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'es_beneficiario_sena',
     ];
 
     /**
@@ -43,6 +45,30 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'es_beneficiario_sena' => 'boolean',
         ];
+    }
+
+    /**
+     * Funciones de ayuda para verificar roles de seguridad
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isRestaurante(): bool
+    {
+        return $this->role === 'restaurante' || $this->role === 'operador_restaurante';
+    }
+
+    public function isBeneficiario(): bool
+    {
+        return $this->role === 'beneficiario' || (bool) $this->es_beneficiario_sena;
+    }
+
+    public function isCliente(): bool
+    {
+        return $this->role === 'cliente';
     }
 }

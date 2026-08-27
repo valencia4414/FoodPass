@@ -12,6 +12,7 @@ use App\Http\Controllers\CanjeController;
 use App\Http\Controllers\HarvestLedgerController;
 use App\Http\Controllers\PlatilloController;
 use App\Http\Controllers\RestauranteController;
+use App\Http\Controllers\PedidoController;
 
 // Redirigir raíz al login
 Route::get('/', function () {
@@ -43,13 +44,15 @@ Route::middleware('auth')->group(function () {
     Route::put('/perfil',         [PerfilController::class,       'update'])->name('perfil.update');
     
     // --- RF04: Canje y Beneficio SENA ---
-    Route::get('/canje',          [CanjeController::class,        'index'])->name('canje');
-    Route::post('/canje',         [CanjeController::class,        'store'])->name('canje.store'); // Para procesar el canje
+    Route::middleware('role:beneficiario,admin')->group(function () {
+        Route::get('/canje',          [CanjeController::class,        'index'])->name('canje');
+        Route::post('/canje',         [CanjeController::class,        'store'])->name('canje.store'); // Para procesar el canje
+    });
     
     Route::get('/harvest-ledger', [HarvestLedgerController::class,'index'])->name('harvest-ledger');
 
     // ── RF04/RF05/RF06 – Administración de Restaurantes y Platillos ──────────
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware('role:admin,restaurante,operador_restaurante')->group(function () {
 
         // CRUD Restaurantes
         Route::resource('restaurantes', RestauranteController::class);
@@ -66,9 +69,10 @@ Route::middleware('auth')->group(function () {
 
     //RF07,RF08,RF09
     Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/pedidos', [PedidoController::class, 'index']);             // Punto 89
-    Route::post('/pedidos', [PedidoController::class, 'store']);            // Punto 86
-    Route::get('/pedidos/{id}', [PedidoController::class, 'show']);         // Punto 88
-    Route::patch('/pedidos/{id}/estado', [PedidoController::class, 'update']); // Punto 87
+        Route::get('/pedidos', [PedidoController::class, 'index']);             // Punto 89
+        Route::post('/pedidos', [PedidoController::class, 'store']);            // Punto 86
+        Route::get('/pedidos/{id}', [PedidoController::class, 'show']);         // Punto 88
+        Route::patch('/pedidos/{id}/estado', [PedidoController::class, 'update']); // Punto 87
+    });
 
 });

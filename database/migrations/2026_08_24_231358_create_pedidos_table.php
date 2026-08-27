@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('pedidos', function (Blueprint $table) {
-         $table->id();
-         $table->foreignId('user_id')->constrained()->onDelete('cascade');
-         $table->foreignId('restaurante_id')->constrained('restaurantes')->onDelete('cascade');
-         $table->enum('estado', ['pendiente', 'en_preparacion', 'entregado', 'cancelado'])->default('pendiente');
-         $table->decimal('total', 10, 2);
-         $table->enum('metodo_pago', ['efectivo', 'transferencia', 'nequi', 'tarjeta']);
-         $table->timestamps();
-        });
+        if (!Schema::hasTable('pedidos')) {
+            Schema::create('pedidos', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->foreignId('restaurante_id')->constrained('restaurantes')->onDelete('cascade');
+                $table->enum('estado', ['pendiente', 'en_preparacion', 'entregado', 'cancelado'])->default('pendiente');
+                $table->decimal('total', 10, 2);
+                $table->enum('metodo_pago', ['efectivo', 'transferencia', 'nequi', 'tarjeta']);
+                $table->timestamps();
+            });
+        }
     }
 
     /**

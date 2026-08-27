@@ -86,7 +86,7 @@
         }
     </style>
 </head>
-<body class="bg-surface text-on-surface min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+<body class="bg-surface text-on-surface min-h-screen flex items-center justify-center p-6 relative overflow-y-auto">
 <!-- Background Decoration -->
 <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
 <div class="absolute -top-24 -left-24 w-96 h-96 bg-surface-container-high rounded-full blur-3xl opacity-50"></div>
