@@ -13,6 +13,9 @@ use App\Http\Controllers\HarvestLedgerController;
 use App\Http\Controllers\PlatilloController;
 use App\Http\Controllers\RestauranteController;
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\TicketController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 // Redirigir raíz al login
 Route::get('/', function () {
@@ -23,8 +26,17 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login',     [LoginController::class,   'showLogin'])->name('login');
     Route::post('/login',    [LoginController::class,   'login'])->name('login.post');
-    Route::get('/register',  [RegisterController::class,'showRegister'])->name('register');
-    Route::post('/register', [RegisterController::class,'register'])->name('register.post');
+    Route::get('/register',  [RegisterController::class, 'showRegister'])->name('register');
+    Route::post('/register', [RegisterController::class, 'register'])->name('register.post');
+
+    // --- Tarea 106: Rutas públicas de Recuperación de Contraseña ---
+    Route::get('/forgot-password', function () {
+        return view('auth.forgot-password');
+    })->name('password.request');
+
+    Route::get('/reset-password/{token}', function ($token) {
+        return view('auth.reset-password', ['token' => $token]);
+    })->name('password.reset');
 });
 
 // Logout
@@ -33,23 +45,45 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 // Rutas protegidas
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard',      [DashboardController::class,    'index'])->name('dashboard');
-    
+
     // --- RF05: Historial ---
     Route::get('/historial',      [HistorialController::class,    'index'])->name('historial');
     Route::get('/historial/{id}', [HistorialController::class,    'show'])->name('historial.show'); // Detalle del pedido
-    
+
     Route::get('/metodos-pago',   [MetodosPagoController::class,  'index'])->name('metodos-pago');
     Route::get('/menu-digital',   [MenuDigitalController::class,  'index'])->name('menu-digital');
     Route::get('/perfil',         [PerfilController::class,       'index'])->name('perfil');
     Route::put('/perfil',         [PerfilController::class,       'update'])->name('perfil.update');
-    
+
     // --- RF04: Canje y Beneficio SENA ---
     Route::middleware('role:beneficiario,admin')->group(function () {
         Route::get('/canje',          [CanjeController::class,        'index'])->name('canje');
         Route::post('/canje',         [CanjeController::class,        'store'])->name('canje.store'); // Para procesar el canje
     });
-    
-    Route::get('/harvest-ledger', [HarvestLedgerController::class,'index'])->name('harvest-ledger');
+
+    Route::get('/harvest-ledger', [HarvestLedgerController::class, 'index'])->name('harvest-ledger');
+
+    // --- Tareas 103-105: Módulo de Soporte (Tickets) ---
+    Route::get('/soporte', [TicketController::class, 'index'])->name('soporte.index');
+    Route::post('/soporte', [TicketController::class, 'store'])->name('soporte.store');
+    Route::get('/soporte/{id}', [TicketController::class, 'show'])->name('soporte.show');
+    Route::post('/soporte/{id}/responder', [TicketController::class, 'responder'])->name('soporte.responder');
+    Route::patch('/soporte/{id}/estado', [TicketController::class, 'cambiarEstado'])->name('soporte.estado');
+
+    // --- Tarea 108: Rutas de Verificación de Correo ---
+    Route::get('/email/verify', function () {
+        return view('auth.verify-email');
+    })->name('verification.notice');
+
+    Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+        $request->fulfill();
+        return redirect('/dashboard')->with('success', '¡Correo verificado con éxito!');
+    })->middleware('signed')->name('verification.verify');
+
+    Route::post('/email/verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', '¡Te hemos enviado un nuevo enlace de verificación!');
+    })->middleware('throttle:6,1')->name('verification.send');
 
     // ── RF04/RF05/RF06 – Administración de Restaurantes y Platillos ──────────
     Route::prefix('admin')->name('admin.')->middleware('role:admin,restaurante,operador_restaurante')->group(function () {
@@ -67,12 +101,11 @@ Route::middleware('auth')->group(function () {
         )->name('platillos.disponibilidad');
     });
 
-    //RF07,RF08,RF09
+    // RF07, RF08, RF09: Pedidos
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/pedidos', [PedidoController::class, 'index']);             // Punto 89
-        Route::post('/pedidos', [PedidoController::class, 'store']);            // Punto 86
-        Route::get('/pedidos/{id}', [PedidoController::class, 'show']);         // Punto 88
-        Route::patch('/pedidos/{id}/estado', [PedidoController::class, 'update']); // Punto 87
+        Route::get('/pedidos', [PedidoController::class, 'index']);
+        Route::post('/pedidos', [PedidoController::class, 'store']);
+        Route::get('/pedidos/{id}', [PedidoController::class, 'show']);
+        Route::patch('/pedidos/{id}/estado', [PedidoController::class, 'update']);
     });
-
 });

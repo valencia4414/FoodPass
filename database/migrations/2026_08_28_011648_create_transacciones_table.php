@@ -11,16 +11,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('transacciones', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('user_id')->constrained()->onDelete('cascade');
-    $table->foreignId('pedido_id')->constrained()->onDelete('cascade');
-    $table->decimal('monto', 10, 2);
-    $table->enum('metodo', ['nequi', 'efectivo', 'transferencia', 'tarjeta']);
-    $table->enum('estado', ['pendiente', 'aprobado', 'rechazado'])->default('pendiente');
-    $table->string('referencia_externa')->nullable();
-    $table->timestamps();
-});
+        Schema::create('transacciones', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            // Ajustado a integer para garantizar compatibilidad con la tabla pedidos de la BD
+            $table->integer('pedido_id');
+
+            $table->decimal('monto', 10, 2);
+            $table->enum('metodo', ['nequi', 'efectivo', 'transferencia', 'tarjeta']);
+            $table->enum('estado', ['pendiente', 'aprobado', 'rechazado'])->default('pendiente');
+            $table->string('referencia_externa')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
