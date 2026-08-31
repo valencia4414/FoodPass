@@ -94,16 +94,25 @@ php artisan serve --host=127.0.0.1 --port=8000
 
 - Tipo: basado en sesión (server-side). El carrito se guarda en `session('cart')`.
 - Endpoints relevantes (definidos en `routes/web.php`):
-  - `GET /cart` → `CartController@show` → vista del carrito (resources/views/cart/show.blade.php).
-  - `POST /cart/add` → `CartController@add` → añade una entrada al carrito en sesión.
-  - `POST /cart/update` → `CartController@update` → actualiza cantidad de un item.
-  - `POST /cart/remove` → `CartController@remove` → elimina item.
+  - `GET /cart` → `CartController@show` → renderiza la vista del carrito y calcula `subtotal` y `total` por cada item.
+  - `POST /cart/add` → `CartController@add` → valida `platillo_id` y cantidad, y añade o incrementa el producto en la sesión.
+  - `POST /cart/update` → `CartController@update` → modifica la cantidad de un producto existente.
+  - `POST /cart/remove` → `CartController@remove` → elimina un producto del carrito.
 
-- Lógica cliente: el panel lateral en resources/views/men_digital_foodpass/menu_digital.blade.php usa Alpine.js para UI; la función `agregarAlCarrito(platillo)` realiza un `fetch('/cart/add')` (POST, CSRF) para persistir en sesión y actualiza la UI localmente como fallback si falla la petición.
+- Estructura de datos: cada item se guarda como un array asociativo indexado por el `id` del platillo:
+  - `id`
+  - `nombre`
+  - `precio`
+  - `cantidad`
+  - `subtotal` (calculado en el controlador al mostrar la vista)
 
-- Controlador: app/Http/Controllers/CartController.php
-  - Guarda el carrito como array asociativo en sesión: `session()->put('cart', $cart)`.
-  - Cada item tiene: `id`, `nombre`, `precio`, `cantidad`, y en la vista se calcula `subtotal`.
+- Controlador real: `app/Http/Controllers/CartController.php`
+  - Usa `$request->session()->get('cart', [])` para leer el carrito.
+  - Guarda cambios con `$request->session()->put('cart', $cart)`.
+  - El método `show()` calcula el subtotal de cada ítem y el total general antes de enviar la vista.
+  - `add()` valida que el platillo exista en `platillos` y evita duplicados sumando la cantidad si ya está presente.
+
+- La vista de confirmación y el panel de compra dependen de esta sesión; no hay persistencia en base de datos todavía, por lo que al recargar o cerrar sesión se puede perder el carrito si no se guarda antes de confirmar el pedido.
 
 ---
 
