@@ -4,10 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Platillo extends Model
 {
     use HasFactory;
+
+    protected static function booted(): void
+    {
+        static::saved(fn () => Cache::forget('menu_del_dia'));
+        static::deleted(fn () => Cache::forget('menu_del_dia'));
+    }
 
     protected $table = 'platillos';
 
