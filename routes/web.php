@@ -15,6 +15,8 @@ use App\Http\Controllers\PlatilloController;
 use App\Http\Controllers\RestauranteController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\CuentaController;
+use App\Http\Controllers\PagoController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
@@ -42,6 +44,9 @@ Route::middleware('guest')->group(function () {
 
 // Logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::get('/privacidad', function () {
+    return view('privacidad');
+})->name('privacidad');
 
 // Rutas protegidas
 Route::middleware('auth')->group(function () {
@@ -55,9 +60,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/menu-digital',   [MenuDigitalController::class,  'index'])->name('menu-digital');
     Route::get('/perfil',         [PerfilController::class,       'index'])->name('perfil');
     Route::put('/perfil',         [PerfilController::class,       'update'])->name('perfil.update');
+    Route::delete('/usuarios/mi-cuenta', [CuentaController::class, 'destroy'])->name('cuenta.destroy');
 
     // --- RF04: Canje y Beneficio SENA ---
-    Route::middleware('role:beneficiario,admin')->group(function () {
+    Route::middleware(['role:beneficiario,admin', 'throttle:foodpass'])->group(function () {
         Route::get('/canje',          [CanjeController::class,        'index'])->name('canje');
         Route::post('/canje',         [CanjeController::class,        'store'])->name('canje.store'); // Para procesar el canje
     });
@@ -104,10 +110,13 @@ Route::middleware('auth')->group(function () {
 
     // RF07, RF08, RF09: Pedidos
     Route::middleware('auth:sanctum')->group(function () {
-        Route::get('/pedidos', [PedidoController::class, 'index']);
-        Route::post('/pedidos', [PedidoController::class, 'store']);
-        Route::get('/pedidos/{id}', [PedidoController::class, 'show']);
-        Route::patch('/pedidos/{id}/estado', [PedidoController::class, 'update']);
+        Route::middleware('throttle:foodpass')->group(function () {
+            Route::get('/pedidos', [PedidoController::class, 'index']);
+            Route::post('/pedidos', [PedidoController::class, 'store']);
+            Route::get('/pedidos/{id}', [PedidoController::class, 'show']);
+            Route::patch('/pedidos/{id}/estado', [PedidoController::class, 'update']);
+            Route::post('/pagos', [PagoController::class, 'store'])->name('pagos.store');
+        });
     });
 
     // Carrito de Pedidos (Tarea 14)
