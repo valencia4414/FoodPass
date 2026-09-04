@@ -142,6 +142,13 @@
               <span class="material-symbols-outlined text-[18px]">logout</span>Cerrar sesión
             </button>
           </form>
+
+          <a href="{{ route('privacidad') }}" class="block text-center text-xs font-semibold text-[#d85f18] hover:underline">Política de privacidad y derechos</a>
+          <form method="POST" action="{{ route('cuenta.destroy') }}" onsubmit="return confirm('Esta acción eliminará tu cuenta y tus datos personales. ¿Deseas continuar?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="w-full border border-red-200 bg-white py-3 text-xs font-bold text-red-600 rounded-xl hover:bg-red-50">Eliminar mi cuenta</button>
+          </form>
         </div>
 
       </div>
