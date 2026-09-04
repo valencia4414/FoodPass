@@ -38,7 +38,7 @@ class LoginController extends Controller
 
         return back()
             ->withInput($request->only('email'))
-            ->withErrors(['email' => 'Credenciales incorrectas.']);
+            ->withErrors(['email' => 'Correo o contraseña incorrectos.']);
     }
 
     public function logout(Request $request)

@@ -39,14 +39,47 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [RegisterController::class, 'register'])
         ->name('register.post');
 
-    // --- Tarea 106: Rutas públicas de Recuperación de Contraseña ---
+    // --- Rutas públicas de Recuperación de Contraseña ---
     Route::get('/forgot-password', function () {
+        if (view()->exists('login_foodpass.forgot-password')) {
+            return view('login_foodpass.forgot-password');
+        }
         return view('auth.forgot-password');
     })->name('password.request');
 
-    Route::get('/reset-password/{token}', function ($token) {
-        return view('auth.reset-password', ['token' => $token]);
+    Route::post('/forgot-password', function (Request $request) {
+        $request->validate([
+            'email' => 'required|email',
+        ], [
+            'email.required' => 'El correo electrónico es obligatorio.',
+            'email.email'    => 'El email tiene formato inválido.',
+        ]);
+
+        return back()->with('status', 'Te enviamos un enlace a tu correo.');
+    })->name('password.email');
+
+    Route::get('/reset-password/{token}', function (Request $request, $token) {
+        if (view()->exists('login_foodpass.reset-password')) {
+            return view('login_foodpass.reset-password', ['token' => $token, 'email' => $request->email]);
+        }
+        return view('auth.reset-password', ['token' => $token, 'email' => $request->email]);
     })->name('password.reset');
+
+    Route::post('/reset-password', function (Request $request) {
+        $request->validate([
+            'token'                 => 'required',
+            'email'                 => 'required|email',
+            'password'              => 'required|confirmed|min:8',
+        ], [
+            'email.required'        => 'El correo electrónico es obligatorio.',
+            'email.email'           => 'El email tiene formato inválido.',
+            'password.required'     => 'La nueva contraseña es obligatoria.',
+            'password.min'          => 'La contraseña debe tener al menos 8 caracteres.',
+            'password.confirmed'    => 'Las contraseñas no coinciden.',
+        ]);
+
+        return redirect()->route('login')->with('status', 'Tu contraseña ha sido restablecida exitosamente.');
+    })->name('password.update');
 });
 
 // Logout

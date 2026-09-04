@@ -107,53 +107,67 @@
 <p class="text-on-surface-variant font-medium mt-1">The Artisanal Ledger</p>
 </div>
 <!-- Login Form -->
-<form action="{{ route('login.post') }}" method="POST" class="space-y-6">
+<form action="{{ route('login.post') }}" method="POST" class="space-y-6" id="login-form">
 @csrf
-{{-- Errores de autenticación --}}
+
+{{-- Aviso visual de credenciales incorrectas o errores --}}
 @if ($errors->any())
-<div class="mb-2 px-4 py-3 bg-error-container text-on-error-container rounded-xl text-sm font-semibold">
-    {{ $errors->first() }}
+<div class="px-4 py-3 bg-error-container text-on-error-container border border-error/30 rounded-xl text-sm font-semibold flex items-center gap-2.5 shadow-sm animate-pulse">
+    <span class="material-symbols-outlined text-lg shrink-0">error</span>
+    <span>Correo o contraseña incorrectos.</span>
 </div>
 @endif
+
 <!-- Email Field -->
 <div class="space-y-2">
-<label class="block text-sm font-semibold text-on-surface ml-1 font-label uppercase tracking-widest text-[10px]" for="email">Email Address</label>
+<label class="block text-sm font-semibold text-on-surface ml-1 font-label uppercase tracking-widest text-[10px]" for="email">Correo electrónico</label>
 <div class="relative group">
 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant">
 <span class="material-symbols-outlined text-[20px]" data-icon="mail">mail</span>
 </div>
-<input class="w-full pl-11 pr-4 py-4 bg-surface-container border-none rounded-xl focus:ring-2 focus:ring-tertiary transition-all outline-none text-on-surface placeholder:text-on-surface-variant/50 font-body" id="email" name="email" placeholder="name@example.com" value="{{ old('email') }}" required="" type="email"/>
+<input class="w-full pl-11 pr-4 py-4 bg-surface-container border-2 border-transparent rounded-xl focus:ring-2 focus:ring-tertiary transition-all outline-none text-on-surface placeholder:text-on-surface-variant/50 font-body" id="email" name="email" placeholder="name@example.com" value="{{ old('email') }}" required type="email"/>
 </div>
 </div>
+
 <!-- Password Field -->
 <div class="space-y-2">
-<div class="flex justify-between items-center px-1">
-<label class="block text-sm font-semibold text-on-surface font-label uppercase tracking-widest text-[10px]" for="password">Password</label>
-<a class="text-[11px] font-bold text-primary hover:text-primary-container transition-colors font-label uppercase tracking-wider" href="#">Forgot?</a>
-</div>
+<label class="block text-sm font-semibold text-on-surface ml-1 font-label uppercase tracking-widest text-[10px]" for="password">Contraseña</label>
 <div class="relative group">
 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant">
 <span class="material-symbols-outlined text-[20px]" data-icon="lock">lock</span>
 </div>
-<input class="w-full pl-11 pr-12 py-4 bg-surface-container border-none rounded-xl focus:ring-2 focus:ring-tertiary transition-all outline-none text-on-surface placeholder:text-on-surface-variant/50 font-body" id="password" name="password" placeholder="••••••••" required="" type="password"/>
-<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-on-surface-variant hover:text-on-surface" type="button">
+<input class="w-full pl-11 pr-12 py-4 bg-surface-container border-2 border-transparent rounded-xl focus:ring-2 focus:ring-tertiary transition-all outline-none text-on-surface placeholder:text-on-surface-variant/50 font-body" id="password" name="password" placeholder="••••••••" required type="password"/>
+<button class="absolute inset-y-0 right-0 pr-4 flex items-center text-on-surface-variant hover:text-on-surface" type="button" onclick="togglePassword('password', this)">
 <span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
 </button>
 </div>
 </div>
+
 <!-- Primary CTA -->
-<button class="w-full bg-primary-container text-on-primary-container font-headline font-bold py-4 rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
-<span>Entrar</span>
-<span class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+<button id="login-btn" class="w-full bg-primary-container text-on-primary-container font-headline font-bold py-4 rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:pointer-events-none" type="submit">
+<span id="btn-text">Entrar</span>
+<span id="btn-icon" class="material-symbols-outlined text-[20px]" data-icon="arrow_forward">arrow_forward</span>
+<svg id="btn-spinner" class="hidden animate-spin h-5 w-5 text-on-primary-container" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+</svg>
 </button>
+
+<!-- Link ¿Olvidaste tu contraseña? debajo del botón -->
+<div class="text-center mt-3">
+    <a class="text-xs font-semibold text-primary hover:underline transition-all" href="{{ route('password.request') }}">
+        ¿Olvidaste tu contraseña?
+    </a>
+</div>
 </form>
+
 <!-- Divider -->
 <div class="relative my-8">
 <div class="absolute inset-0 flex items-center">
 <div class="w-full h-[1px] bg-outline-variant/20"></div>
 </div>
 <div class="relative flex justify-center text-xs">
-<span class="bg-surface-container-lowest px-4 text-on-surface-variant font-label uppercase tracking-[0.2em] font-medium">Or continue with</span>
+<span class="bg-surface-container-lowest px-4 text-on-surface-variant font-label uppercase tracking-[0.2em] font-medium">O continuar con</span>
 </div>
 </div>
 <!-- Social Login -->
@@ -199,4 +213,36 @@
 </div>
 </div>
 </div>
+
+<script>
+function togglePassword(fieldId, btn) {
+    const input = document.getElementById(fieldId);
+    const icon  = btn.querySelector('.material-symbols-outlined');
+    if (!input || !icon) return;
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+    } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('login-form');
+    const submitBtn = document.getElementById('login-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnIcon = document.getElementById('btn-icon');
+    const btnSpinner = document.getElementById('btn-spinner');
+
+    if (form && submitBtn) {
+        form.addEventListener('submit', () => {
+            submitBtn.setAttribute('disabled', 'disabled');
+            if (btnText) btnText.textContent = 'Iniciando sesión...';
+            if (btnIcon) btnIcon.classList.add('hidden');
+            if (btnSpinner) btnSpinner.classList.remove('hidden');
+        });
+    }
+});
+</script>
 </body></html>

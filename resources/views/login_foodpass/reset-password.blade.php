@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html class="light" lang="es"><head>
+<html class="light" lang="es">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>FoodPass - Crear cuenta</title>
+<title>FoodPass - Restablecer contraseña</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
@@ -94,43 +95,34 @@
 </div>
 <!-- Main Content Container -->
 <main class="w-full max-w-md relative z-10">
-<!-- Register Card -->
+<!-- Reset Password Card -->
 <div class="bg-surface-container-lowest rounded-[2rem] p-8 md:p-12 shadow-[0px_20px_40px_rgba(18,31,5,0.06)] border border-outline-variant/15">
 <!-- Logo Section -->
-<div class="flex flex-col items-center mb-8">
+<div class="flex flex-col items-center mb-6">
 <div class="w-16 h-16 bg-inverse-surface rounded-2xl flex items-center justify-center mb-4 shadow-xl">
-<span class="material-symbols-outlined text-primary-container text-4xl">restaurant_menu</span>
+<span class="material-symbols-outlined text-primary-container text-4xl">key</span>
 </div>
 <h1 class="text-3xl font-extrabold tracking-tight text-on-surface font-headline">FoodPass</h1>
-<p class="text-on-surface-variant font-medium mt-1">Crear cuenta nueva</p>
+<p class="text-on-surface-variant font-medium mt-1">Restablecer contraseña</p>
 </div>
-<!-- Register Form -->
-<form action="{{ route('register.post') }}" method="POST" class="space-y-5" id="register-form" novalidate>
-@csrf
 
-{{-- Errores de validación del servidor --}}
+<p class="text-xs text-on-surface-variant text-center mb-6 leading-relaxed">
+Crea una nueva contraseña segura para tu cuenta de FoodPass.
+</p>
+
+<!-- Validation Errors -->
 @if ($errors->any())
-<div class="px-4 py-3 bg-error-container text-on-error-container rounded-xl text-sm font-semibold flex items-center gap-2">
-    <span class="material-symbols-outlined text-base">warning</span>
+<div class="mb-6 px-4 py-3 bg-error-container text-on-error-container border border-error/30 rounded-xl text-sm font-semibold flex items-center gap-2.5 shadow-sm">
+    <span class="material-symbols-outlined text-lg shrink-0">error</span>
     <span>{{ $errors->first() }}</span>
 </div>
 @endif
 
-<!-- Name Field -->
-<div class="space-y-1.5">
-<label class="block text-sm font-semibold text-on-surface ml-1 font-label uppercase tracking-widest text-[10px]" for="name">Nombre completo</label>
-<div class="relative group">
-<div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant">
-<span class="material-symbols-outlined text-[20px]">person</span>
-</div>
-<input class="w-full pl-11 pr-4 py-4 bg-surface-container border-2 border-transparent rounded-xl focus:ring-2 focus:ring-tertiary transition-all outline-none text-on-surface placeholder:text-on-surface-variant/50 font-body"
-       id="name" name="name" placeholder="Tu nombre" value="{{ old('name') }}" required type="text"/>
-</div>
-<p id="name-error" class="hidden text-xs text-error font-medium ml-1 mt-1 flex items-center gap-1">
-  <span class="material-symbols-outlined text-[16px]">error</span>
-  <span class="error-msg"></span>
-</p>
-</div>
+<!-- Reset Password Form -->
+<form action="{{ route('password.update') }}" method="POST" class="space-y-5" id="reset-form" novalidate>
+@csrf
+
+<input type="hidden" name="token" value="{{ $token ?? request()->route('token') }}"/>
 
 <!-- Email Field -->
 <div class="space-y-1.5">
@@ -140,7 +132,7 @@
 <span class="material-symbols-outlined text-[20px]">mail</span>
 </div>
 <input class="w-full pl-11 pr-4 py-4 bg-surface-container border-2 border-transparent rounded-xl focus:ring-2 focus:ring-tertiary transition-all outline-none text-on-surface placeholder:text-on-surface-variant/50 font-body"
-       id="email" name="email" placeholder="name@example.com" value="{{ old('email') }}" required type="email"/>
+       id="email" name="email" placeholder="name@example.com" value="{{ old('email', $email ?? request()->email) }}" required type="email"/>
 </div>
 <p id="email-error" class="hidden text-xs text-error font-medium ml-1 mt-1 flex items-center gap-1">
   <span class="material-symbols-outlined text-[16px]">error</span>
@@ -150,7 +142,7 @@
 
 <!-- Password Field -->
 <div class="space-y-1.5">
-<label class="block text-sm font-semibold text-on-surface ml-1 font-label uppercase tracking-widest text-[10px]" for="password">Contraseña</label>
+<label class="block text-sm font-semibold text-on-surface ml-1 font-label uppercase tracking-widest text-[10px]" for="password">Nueva contraseña</label>
 <div class="relative group">
 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant">
 <span class="material-symbols-outlined text-[20px]">lock</span>
@@ -170,13 +162,13 @@
 
 <!-- Confirm Password Field -->
 <div class="space-y-1.5">
-<label class="block text-sm font-semibold text-on-surface ml-1 font-label uppercase tracking-widest text-[10px]" for="password_confirmation">Confirmar contraseña</label>
+<label class="block text-sm font-semibold text-on-surface ml-1 font-label uppercase tracking-widest text-[10px]" for="password_confirmation">Confirmar nueva contraseña</label>
 <div class="relative group">
 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-on-surface-variant">
 <span class="material-symbols-outlined text-[20px]">lock_reset</span>
 </div>
 <input class="w-full pl-11 pr-12 py-4 bg-surface-container border-2 border-transparent rounded-xl focus:ring-2 focus:ring-tertiary transition-all outline-none text-on-surface placeholder:text-on-surface-variant/50 font-body"
-       id="password_confirmation" name="password_confirmation" placeholder="Repite tu contraseña" required type="password"/>
+       id="password_confirmation" name="password_confirmation" placeholder="Repite tu nueva contraseña" required type="password"/>
 <button class="absolute inset-y-0 right-0 pr-4 flex items-center text-on-surface-variant hover:text-on-surface" type="button"
         onclick="togglePassword('password_confirmation', this)">
 <span class="material-symbols-outlined text-[20px]">visibility</span>
@@ -189,18 +181,23 @@
 </div>
 
 <!-- Submit Button -->
-<button id="submit-btn" class="w-full bg-primary-container text-on-primary-container font-headline font-bold py-4 rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:pointer-events-none" type="submit" disabled>
-<span>Crear cuenta</span>
-<span class="material-symbols-outlined text-[20px]">person_add</span>
+<button id="reset-btn" class="w-full bg-primary-container text-on-primary-container font-headline font-bold py-4 rounded-xl shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:pointer-events-none" type="submit" disabled>
+<span id="btn-text">Guardar nueva contraseña</span>
+<span id="btn-icon" class="material-symbols-outlined text-[20px]">check_circle</span>
+<svg id="btn-spinner" class="hidden animate-spin h-5 w-5 text-on-primary-container" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+</svg>
 </button>
 </form>
 
 <!-- Footer Link -->
-<p class="text-center mt-8 text-on-surface-variant font-medium">
-    ¿Ya tienes una cuenta?
+<p class="text-center mt-8 text-on-surface-variant font-medium text-sm">
+    ¿Recordaste tu contraseña?
     <a class="text-primary font-bold hover:underline ml-1" href="{{ route('login') }}">Iniciar sesión</a>
 </p>
 </div>
+
 <!-- System Status Badges -->
 <div class="mt-8 flex justify-between items-center px-4">
 <div class="flex items-center gap-2">
@@ -218,6 +215,7 @@
 function togglePassword(fieldId, btn) {
     const input = document.getElementById(fieldId);
     const icon  = btn.querySelector('.material-symbols-outlined');
+    if (!input || !icon) return;
     if (input.type === 'password') {
         input.type = 'text';
         icon.textContent = 'visibility_off';
@@ -228,21 +226,15 @@ function togglePassword(fieldId, btn) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('register-form');
-    const submitBtn = document.getElementById('submit-btn');
+    const form = document.getElementById('reset-form');
+    const submitBtn = document.getElementById('reset-btn');
+    const btnText = document.getElementById('btn-text');
+    const btnIcon = document.getElementById('btn-icon');
+    const btnSpinner = document.getElementById('btn-spinner');
 
     if (!form || !submitBtn) return;
 
     const fields = {
-        name: {
-            input: document.getElementById('name'),
-            error: document.getElementById('name-error'),
-            touched: false,
-            validate: (val) => {
-                if (!val.trim()) return 'El campo está vacío.';
-                return '';
-            }
-        },
         email: {
             input: document.getElementById('email'),
             error: document.getElementById('email-error'),
@@ -327,12 +319,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const field = fields[key];
         if (!field.input) return;
 
-        // Validate on input typing
         field.input.addEventListener('input', () => {
             field.touched = true;
             updateFieldStatus(key);
 
-            // Re-validate password confirmation if password changes and confirmation was touched
             if (key === 'password' && fields.password_confirmation && fields.password_confirmation.touched) {
                 updateFieldStatus('password_confirmation');
             }
@@ -340,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
             checkFormValidity();
         });
 
-        // Validate on blur
         field.input.addEventListener('blur', () => {
             field.touched = true;
             updateFieldStatus(key);
@@ -348,7 +337,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Handle form submit attempt (e.g., pressing Enter key inside an input)
     form.addEventListener('submit', (e) => {
         let allValid = true;
 
@@ -365,10 +353,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!allValid) {
             e.preventDefault();
+            return;
         }
+
+        submitBtn.setAttribute('disabled', 'disabled');
+        if (btnText) btnText.textContent = 'Guardando...';
+        if (btnIcon) btnIcon.classList.add('hidden');
+        if (btnSpinner) btnSpinner.classList.remove('hidden');
     });
 
-    // Check pre-filled values (e.g., from server old() input)
     Object.keys(fields).forEach(key => {
         const field = fields[key];
         if (field.input && field.input.value.trim() !== '') {
@@ -380,4 +373,5 @@ document.addEventListener('DOMContentLoaded', () => {
     checkFormValidity();
 });
 </script>
-</body></html>
+</body>
+</html>
