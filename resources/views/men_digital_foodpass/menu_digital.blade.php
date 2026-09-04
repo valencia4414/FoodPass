@@ -494,9 +494,38 @@
                 },
 
                 procesarPedido() {
-                    alert('¡Pedido confirmado con éxito mediante ' + this.metodoPago + '! Tu orden pasará a la cocina de la Cafetería SENA.');
-                    this.carrito = [];
-                    this.abrirConfirmacion = false;
+                    const items = this.carrito.map(item => ({
+                        platillo_id: item.id,
+                        cantidad: item.cantidad,
+                        precio: item.precio
+                    }));
+
+                    fetch('{{ route("pedido.store.web") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            metodo_pago: this.metodoPago,
+                            items: items
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert('¡Pedido #' + data.pedido_id + ' confirmado con éxito mediante ' + this.metodoPago + '! Tu orden pasará a la cocina de la Cafetería SENA.');
+                            this.carrito = [];
+                            this.abrirConfirmacion = false;
+                        } else {
+                            alert('Error al procesar el pedido. Inténtalo de nuevo.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error de conexión. Inténtalo de nuevo.');
+                    });
                 }
             }
         }

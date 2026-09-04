@@ -30,6 +30,12 @@
     <a href="{{ route('historial') }}" class="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 px-4 py-2.5 mx-1 rounded-full transition-all text-sm font-semibold">
       <span class="material-symbols-outlined text-[20px]">history</span>Historial
     </a>
+    <a href="{{ route('canje') }}" class="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 px-4 py-2.5 mx-1 rounded-full transition-all text-sm font-semibold">
+      <span class="material-symbols-outlined text-[20px]">redeem</span>Canje
+    </a>
+    <a href="{{ route('metodos-pago') }}" class="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 px-4 py-2.5 mx-1 rounded-full transition-all text-sm font-semibold">
+      <span class="material-symbols-outlined text-[20px]">payments</span>Pagos
+    </a>
     <!-- ACTIVO -->
     <a href="{{ route('perfil') }}" class="flex items-center gap-3 bg-[#F97F2D] text-white px-4 py-2.5 mx-1 rounded-full text-sm font-semibold">
       <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1">person</span>Perfil

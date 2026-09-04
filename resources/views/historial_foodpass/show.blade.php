@@ -62,9 +62,9 @@
                         <!-- Icono y Título -->
                         <div class="flex flex-col items-center mb-8">
                             <div class="w-16 h-16 bg-orange-100 text-[#F97F2D] rounded-full flex items-center justify-center mb-4">
-                                <span class="material-symbols-outlined text-[32px]">receipt_long</span>
+                                <span class="material-symbols-outlined text-[32px]">{{ $pedido->tipo == 'canje' ? 'receipt_long' : 'shopping_bag' }}</span>
                             </div>
-                            <h2 class="text-2xl font-extrabold text-gray-900">Detalle del Canje</h2>
+                            <h2 class="text-2xl font-extrabold text-gray-900">Detalle {{ $pedido->tipo == 'canje' ? 'del Canje' : 'de la Compra' }}</h2>
                             <p class="text-gray-400 text-sm">Comprobante No. #FP-{{ str_pad($pedido->id, 4, '0', STR_PAD_LEFT) }}</p>
                         </div>
 
@@ -86,7 +86,7 @@
                             </div>
                             <div class="flex justify-between">
                                 <span class="text-gray-400 text-sm font-medium">TIPO BENEFICIO</span>
-                                <span class="text-gray-900 text-sm font-semibold">Ayuda Alimentaria SENA</span>
+                                <span class="text-gray-900 text-sm font-semibold">{{ $pedido->tipo == 'canje' ? 'Ayuda Alimentaria SENA' : 'Compra en Menú Digital' }}</span>
                             </div>
                         </div>
 
@@ -98,13 +98,15 @@
                             </div>
                             <div class="flex justify-between items-center text-sm mb-4">
                                 <span class="text-gray-500 italic">{{ $pedido->detalle ?? 'Almuerzo Artesanal Completo' }}</span>
-                                <span class="text-gray-900 font-medium">$0.00</span>
+                                <span class="text-gray-900 font-medium">${{ number_format($pedido->total ?? 0, 2) }}</span>
                             </div>
                             <div class="border-t border-gray-200 pt-3 flex justify-between items-center">
                                 <span class="text-gray-900 font-extrabold">TOTAL</span>
-                                <span class="text-[#F97F2D] font-black text-xl">$0.00</span>
+                                <span class="text-[#F97F2D] font-black text-xl">${{ number_format($pedido->total ?? 0, 2) }}</span>
                             </div>
+                            @if($pedido->tipo == 'canje')
                             <p class="text-[10px] text-gray-400 mt-2 text-center">* Cubierto por el beneficio de ayuda alimentaria.</p>
+                            @endif
                         </div>
 
                         <!-- Botones de Acción -->

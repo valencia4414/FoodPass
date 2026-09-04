@@ -52,14 +52,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/metodos-pago',   [MetodosPagoController::class,  'index'])->name('metodos-pago');
     Route::get('/menu-digital',   [MenuDigitalController::class,  'index'])->name('menu-digital');
+    Route::post('/menu-digital/pedido', [PedidoController::class, 'storeWeb'])->name('pedido.store.web');
     Route::get('/perfil',         [PerfilController::class,       'index'])->name('perfil');
     Route::put('/perfil',         [PerfilController::class,       'update'])->name('perfil.update');
 
     // --- RF04: Canje y Beneficio SENA ---
-    Route::middleware('role:beneficiario,admin')->group(function () {
-        Route::get('/canje',          [CanjeController::class,        'index'])->name('canje');
-        Route::post('/canje',         [CanjeController::class,        'store'])->name('canje.store'); // Para procesar el canje
-    });
+    Route::get('/canje',          [CanjeController::class,        'index'])->name('canje');
+    Route::post('/canje',         [CanjeController::class,        'store'])->name('canje.store');
 
     Route::get('/harvest-ledger', [HarvestLedgerController::class, 'index'])->name('harvest-ledger');
 
