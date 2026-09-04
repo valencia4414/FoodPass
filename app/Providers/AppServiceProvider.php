@@ -6,6 +6,7 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+
+    // RNF04 — Forzar HTTPS en producción
+        if ($this->app->environment('production')) {
+            URL::forceScheme('https');
+        }
         RateLimiter::for('foodpass', function (Request $request): Limit {
             $key = $request->user()?->getAuthIdentifier() ?: $request->ip();
 
