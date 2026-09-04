@@ -152,16 +152,16 @@
                                     <td class="py-4 px-6 font-medium text-gray-900">#FP-{{ str_pad($pedido->id, 4, '0', STR_PAD_LEFT) }}</td>
                                     <td class="py-4 px-6">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
-                                                <span class="material-symbols-outlined text-[16px]">restaurant</span>
+                                            <div class="w-8 h-8 rounded-full flex items-center justify-center {{ $pedido->tipo == 'canje' ? 'bg-orange-100 text-orange-600' : 'bg-green-100 text-green-600' }}">
+                                                <span class="material-symbols-outlined text-[16px]">{{ $pedido->tipo == 'canje' ? 'restaurant' : 'shopping_bag' }}</span>
                                             </div>
                                             <div>
                                                 <p class="font-medium text-gray-900">{{ $pedido->detalle ?? 'Beneficio Alimentario' }}</p>
-                                                <p class="text-xs text-gray-500">Canje Único</p>
+                                                <p class="text-xs text-gray-500">{{ $pedido->tipo == 'canje' ? 'Canje Único' : 'Compra (Valor: $'.number_format($pedido->total, 2).')' }}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-4 px-6 text-gray-500">{{ $pedido->created_at->format('d M, H:i') }}</td>
+                                    <td class="py-4 px-6 text-gray-500">{{ \Carbon\Carbon::parse($pedido->created_at)->format('d M, H:i') }}</td>
                                     <td class="py-4 px-6">
                                         @if($pedido->estado == 'entregado')
                                             <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">ENTREGADO</span>
@@ -172,8 +172,7 @@
                                         @endif
                                     </td>
                                     <td class="py-4 px-6 text-right">
-                                        <!-- RF05 PUNTO 25: NAVEGAR A VISTA DE DETALLE -->
-                                        <a href="{{ route('historial.show', $pedido->id) }}" class="text-gray-400 hover:text-[#F97F2D] transition-colors p-1">
+                                        <a href="{{ route('historial.show', $pedido->id) }}?tipo={{ $pedido->tipo }}" class="text-gray-400 hover:text-[#F97F2D] transition-colors p-1">
                                             <span class="material-symbols-outlined">receipt_long</span>
                                         </a>
                                     </td>
