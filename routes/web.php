@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HistorialController;
@@ -38,6 +39,14 @@ Route::middleware('guest')->group(function () {
 
     Route::post('/register', [RegisterController::class, 'register'])
         ->name('register.post');
+        
+            // RF21 — Verificación OTP (MFA para admins)
+    Route::get('/otp/verify', [OtpController::class, 'show'])
+        ->name('otp.verify');
+    Route::post('/otp/verify', [OtpController::class, 'verify'])
+        ->name('otp.verify.post');
+    Route::post('/otp/resend', [OtpController::class, 'resend'])
+        ->name('otp.resend');
 
     // --- Rutas públicas de Recuperación de Contraseña ---
     Route::get('/forgot-password', function () {
