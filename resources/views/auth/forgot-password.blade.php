@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html class="light" lang="es">
 <head>
@@ -84,3 +85,6 @@
 
 </body>
 </html>
+=======
+@include('login_foodpass.forgot-password')
+>>>>>>> acab2ef7ff501e8ec4cc1a538a5222850f87a411

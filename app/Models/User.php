@@ -17,12 +17,13 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var list<string>
      */
-    protected $fillable = [
+        protected $fillable = [
         'name',
         'email',
         'password',
         'role',
         'es_beneficiario_sena',
+<<<<<<< HEAD
         'telefono',
         'direccion',
         'idioma_preferido',
@@ -30,29 +31,33 @@ class User extends Authenticatable implements MustVerifyEmail
         'membresia',
         'fecha_renovacion_membresia',
         'puntos_fp',
+=======
+        'google2fa_secret',
+        'google2fa_enabled',
+>>>>>>> acab2ef7ff501e8ec4cc1a538a5222850f87a411
     ];
-
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var list<string>
      */
-    protected $hidden = [
+        protected $hidden = [
         'password',
         'remember_token',
+        'google2fa_secret',
     ];
-
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
-    protected function casts(): array
+       protected function casts(): array
     {
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'es_beneficiario_sena' => 'boolean',
+            'google2fa_enabled' => 'boolean',
         ];
     }
 

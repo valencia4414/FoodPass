@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Pedido;
+use App\Models\Platillo;
+use App\Models\DetallePedido;
+use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
@@ -103,5 +107,45 @@ class PedidoController extends Controller
         }
 
         return response()->json(['error' => 'No tienes permisos para este cambio.'], 403);
+    }
+
+    // Método para guardar pedidos desde el menú digital (web)
+    public function storeWeb(Request $request)
+    {
+        $request->validate([
+            'metodo_pago' => 'required|string',
+            'items' => 'required|array|min:1',
+            'items.*.platillo_id' => 'required|integer',
+            'items.*.cantidad' => 'required|integer|min:1',
+            'items.*.precio' => 'required|numeric|min:0',
+        ]);
+
+        return DB::transaction(function () use ($request) {
+            $total = 0;
+
+            foreach ($request->items as $item) {
+                $total += $item['precio'] * $item['cantidad'];
+            }
+
+            // Usar restaurante_id 1 (Cafetería SENA) por defecto
+            $pedido = Pedido::create([
+                'user_id' => auth()->id(),
+                'restaurante_id' => 1,
+                'metodo_pago' => $request->metodo_pago,
+                'total' => $total,
+                'estado' => 'pendiente',
+            ]);
+
+            foreach ($request->items as $item) {
+                DetallePedido::create([
+                    'pedido_id' => $pedido->id,
+                    'platillo_id' => $item['platillo_id'],
+                    'cantidad' => $item['cantidad'],
+                    'precio_unitario' => $item['precio'],
+                ]);
+            }
+
+            return response()->json(['success' => true, 'pedido_id' => $pedido->id]);
+        });
     }
 }

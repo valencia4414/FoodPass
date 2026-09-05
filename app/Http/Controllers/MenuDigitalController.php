@@ -6,6 +6,7 @@ use App\Models\Platillo;
 use App\Models\Restaurante;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class MenuDigitalController extends Controller
 {
@@ -20,17 +21,19 @@ class MenuDigitalController extends Controller
         $categoriaActiva = $request->get('categoria', 'todos');
 
         // Tarea 9: Quitamos "where disponible = true" para poder mostrar platillos AGOTADOS
-        $query = Platillo::query();
+        $platillos = Cache::remember('menu_del_dia', 300, function () {
+            return Platillo::orderBy('categoria')->orderBy('nombre')->get();
+        });
 
         if ($restaurante) {
-            $query->where('restaurante_id', $restaurante->id);
+            $platillos = $platillos->where('restaurante_id', $restaurante->id);
         }
 
         if ($categoriaActiva !== 'todos') {
-            $query->where('categoria', $categoriaActiva);
+            $platillos = $platillos->where('categoria', $categoriaActiva);
         }
 
-        $platillos = $query->orderBy('categoria')->orderBy('nombre')->get();
+        $platillos = $platillos->values();
 
         // Platillo hero: primer plato fuerte disponible
         $platilloHero = Platillo::where('categoria', 'plato_fuerte')
