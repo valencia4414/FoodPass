@@ -1,4 +1,3 @@
-Html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,6 +21,9 @@ Html
     <div class="flex-1 flex flex-col overflow-hidden">
         <!-- Header Reutilizable (RNF06) -->
         @include('partials.header')
+
+        <!-- Notificaciones Toast (RF07) -->
+        @include('partials.toast')
 
         <!-- Contenido Dinámico -->
         <main class="flex-1 overflow-y-auto p-4 md:p-8">

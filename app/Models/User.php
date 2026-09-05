@@ -23,6 +23,13 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role',
         'es_beneficiario_sena',
+        'telefono',
+        'direccion',
+        'idioma_preferido',
+        'foto_perfil',
+        'membresia',
+        'fecha_renovacion_membresia',
+        'puntos_fp',
     ];
 
     /**
@@ -80,5 +87,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new \App\Notifications\CustomVerifyEmail());
+    }
+
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class, 'usuario_id', 'id');
     }
 }

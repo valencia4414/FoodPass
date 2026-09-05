@@ -65,6 +65,8 @@ class PedidoController extends Controller
                 $pedido->detalles()->create($detalle);
             }
 
+            request()->session()->flash('success', '¡Tu pedido fue realizado con éxito!');
+
             return response()->json($pedido->load('detalles'), 201);
         });
     }

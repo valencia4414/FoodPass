@@ -43,6 +43,6 @@ class CanjeController extends Controller
         'detalle' => 'Almuerzo SENA'
     ]);
 
-    return back()->with('success', '¡Canje realizado con éxito!');
+    return back()->with('success', '¡Beneficio canjeado exitosamente!');
 }
 }
