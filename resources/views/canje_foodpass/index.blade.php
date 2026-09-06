@@ -7,7 +7,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Agregamos SweetAlert2 para el punto 20 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script>
         tailwind.config = {
             theme: {
@@ -35,62 +36,18 @@
         $user = auth()->user();
         // RF14: Verificar si ya canjeó hoy para el bloqueo
         $yaCanjeoHoy = \App\Models\Canje::where('user_id', $user->id)
-                        ->whereDate('created_at', today())
+                        ->where('fecha_canje', today())
                         ->exists();
-        $esBeneficiario = $user->es_beneficiario_sena;
+        // RF13: Verificar elegibilidad contra tabla beneficiarios_sena
+        $esBeneficiario = \App\Models\BeneficiarioSena::where('email', $user->email)
+                        ->where('activo', true)
+                        ->exists();
     @endphp
 
-    <!-- Sidebar -->
-    <aside class="w-56 bg-fp-dark flex flex-col justify-between flex-shrink-0">
-        <div>
-            <div class="p-6">
-                <h1 class="text-white text-2xl font-bold tracking-tight">FoodPass</h1>
-                <p class="text-white/50 text-xs font-semibold tracking-widest mt-1">ARTISANAL LEDGER</p>
-            </div>
-            
-            <nav class="mt-4 px-4 space-y-2">
-                <a href="{{ route('dashboard') }}" class="flex items-center px-4 py-3 text-white/70 hover:bg-white/10 rounded-xl transition-colors">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                    <span class="font-medium text-sm">Inicio</span>
-                </a>
-                <a href="{{ route('menu-digital') }}" class="flex items-center px-4 py-3 text-white/70 hover:bg-white/10 rounded-xl transition-colors">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
-                    <span class="font-medium text-sm">Menú</span>
-                </a>
-                <a href="{{ route('historial') }}" class="flex items-center px-4 py-3 text-white/70 hover:bg-white/10 rounded-xl transition-colors">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <span class="font-medium text-sm">Historial</span>
-                </a>
-                <a href="{{ route('canje') }}" class="flex items-center px-4 py-3 bg-fp-orange text-white rounded-xl shadow-lg shadow-orange-500/20 transition-colors">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
-                    <span class="font-medium text-sm">Canje</span>
-                </a>
-                <a href="{{ route('metodos-pago') }}" class="flex items-center px-4 py-3 text-white/70 hover:bg-white/10 rounded-xl transition-colors">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path></svg>
-                    <span class="font-medium text-sm">Pagos</span>
-                </a>
-                <a href="{{ route('perfil') }}" class="flex items-center px-4 py-3 text-white/70 hover:bg-white/10 rounded-xl transition-colors">
-                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                    <span class="font-medium text-sm">Perfil</span>
-                </a>
-            </nav>
-        </div>
-
-        <div class="p-4 border-t border-white/10">
-            <div class="flex items-center">
-                <div class="w-8 h-8 rounded-full bg-fp-orange text-white flex items-center justify-center font-bold text-sm shadow-sm">
-                    {{ substr($user->name ?? 'U', 0, 1) }}
-                </div>
-                <div class="ml-3">
-                    <p class="text-sm font-medium text-white">{{ $user->name ?? 'Usuario' }}</p>
-                    <p class="text-xs text-white/50">v2.4.0</p>
-                </div>
-            </div>
-        </div>
-    </aside>
+    @include('partials.sidebar')
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <div class="ml-64 flex-1 flex flex-col overflow-hidden">
         <header class="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-6 flex-shrink-0 z-10">
             <div class="flex items-center w-96 relative">
                 <svg class="w-5 h-5 text-gray-400 absolute left-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>

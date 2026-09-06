@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Métodos de Pago - FoodPass</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f0ffd8; }
@@ -13,60 +14,10 @@
     </style>
 </head>
 <body class="antialiased text-gray-800">
-    <!-- Sidebar -->
-    <aside class="fixed inset-y-0 left-0 w-56 sidebar-bg text-white flex flex-col z-20">
-        <div class="p-6 flex items-center space-x-3">
-            <div class="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center font-bold text-lg">
-                F
-            </div>
-            <div>
-                <h1 class="font-bold text-lg leading-tight">FoodPass</h1>
-                <p class="text-[10px] text-gray-400 tracking-wider">ARTISANAL LEDGER</p>
-            </div>
-        </div>
-
-        <nav class="flex-1 px-4 py-6 space-y-2">
-            <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
-                <i class="fas fa-home w-5 text-center"></i>
-                <span>Inicio</span>
-            </a>
-            <a href="{{ route('menu-digital') }}" class="flex items-center space-x-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
-                <i class="fas fa-utensils w-5 text-center"></i>
-                <span>Menú</span>
-            </a>
-            <a href="{{ route('historial') }}" class="flex items-center space-x-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
-                <i class="fas fa-history w-5 text-center"></i>
-                <span>Historial</span>
-            </a>
-            <a href="{{ route('canje') }}" class="flex items-center space-x-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
-                <i class="fas fa-gift w-5 text-center"></i>
-                <span>Canje</span>
-            </a>
-            <a href="{{ route('metodos-pago') }}" class="flex items-center space-x-3 px-4 py-3 text-sm text-white bg-orange-500 rounded-xl shadow-lg shadow-orange-500/20">
-                <i class="fas fa-credit-card w-5 text-center"></i>
-                <span class="font-medium">Pagos</span>
-            </a>
-            <a href="{{ route('perfil') }}" class="flex items-center space-x-3 px-4 py-3 text-sm text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
-                <i class="fas fa-user w-5 text-center"></i>
-                <span>Perfil</span>
-            </a>
-        </nav>
-
-        <div class="p-4 border-t border-white/10">
-            <div class="flex items-center space-x-3 p-3 rounded-xl bg-white/5">
-                <div class="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-bold">
-                    U
-                </div>
-                <div class="flex-1 min-w-0">
-                    <p class="text-sm font-medium text-white truncate">Usuario</p>
-                    <p class="text-xs text-orange-400 truncate">Premium Member</p>
-                </div>
-            </div>
-        </div>
-    </aside>
+    @include('partials.sidebar')
 
     <!-- Main Content -->
-    <main class="ml-56 min-h-screen">
+    <main class="ml-64 min-h-screen">
         <!-- Header -->
         <header class="h-14 bg-white border-b border-gray-100 flex items-center justify-between px-8 sticky top-0 z-10">
             <div class="relative w-96">

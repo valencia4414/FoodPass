@@ -23,7 +23,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role',
         'es_beneficiario_sena',
-<<<<<<< HEAD
         'telefono',
         'direccion',
         'idioma_preferido',
@@ -31,10 +30,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'membresia',
         'fecha_renovacion_membresia',
         'puntos_fp',
-=======
         'google2fa_secret',
         'google2fa_enabled',
->>>>>>> acab2ef7ff501e8ec4cc1a538a5222850f87a411
     ];
     /**
      * The attributes that should be hidden for serialization.
@@ -76,7 +73,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function isBeneficiario(): bool
     {
-        return $this->role === 'beneficiario' || (bool) $this->es_beneficiario_sena;
+        if ($this->role === 'beneficiario' || (bool) $this->es_beneficiario_sena) {
+            return true;
+        }
+
+        // RF13: Validar contra la tabla beneficiarios_sena
+        return \App\Models\BeneficiarioSena::where('email', $this->email)
+            ->where('activo', true)
+            ->exists();
     }
 
     public function isCliente(): bool

@@ -46,55 +46,9 @@
 </head>
 <body class="bg-fp-bg text-fp-darkgreen antialiased h-screen overflow-hidden flex" 
       x-data="carritoApp()">
+    @include('partials.sidebar')
 
-    <!-- Sidebar Izquierdo Fijo -->
-    <aside class="w-56 bg-fp-darkgreen h-screen flex flex-col justify-between fixed left-0 top-0 z-20 text-white shrink-0">
-        <div>
-            <div class="px-6 py-8">
-                <h1 class="text-2xl font-bold tracking-tight text-fp-orange">FoodPass</h1>
-                <p class="text-[10px] text-gray-400 font-medium uppercase tracking-widest mt-1">Gestión Alimentaria SENA</p>
-            </div>
-
-            <nav class="px-3 flex flex-col gap-1">
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">home</span>
-                    <span class="text-sm font-medium">Inicio</span>
-                </a>
-                <a href="{{ route('menu-digital') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-fp-orange text-white shadow-md shadow-fp-orange/20 transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">restaurant_menu</span>
-                    <span class="text-sm font-semibold">Menú</span>
-                </a>
-                <a href="{{ route('historial') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">receipt_long</span>
-                    <span class="text-sm font-medium">Historial</span>
-                </a>
-                <a href="{{ route('canje') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">loyalty</span>
-                    <span class="text-sm font-medium">Canje SENA</span>
-                </a>
-                <a href="{{ route('metodos-pago') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">credit_card</span>
-                    <span class="text-sm font-medium">Pagos</span>
-                </a>
-                <a href="{{ route('perfil') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-white/10 hover:text-white transition-colors">
-                    <span class="material-symbols-outlined text-[20px]">person</span>
-                    <span class="text-sm font-medium">Perfil</span>
-                </a>
-            </nav>
-        </div>
-
-        <div class="p-4 mb-4 mx-3 rounded-xl bg-black/30 border border-white/10 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-fp-orange flex items-center justify-center font-bold text-white shrink-0 shadow-inner">
-                {{ substr(auth()->user()->name ?? 'U', 0, 1) }}
-            </div>
-            <div class="overflow-hidden">
-                <p class="text-sm font-medium text-white truncate">{{ auth()->user()->name ?? 'Usuario SENA' }}</p>
-                <p class="text-xs text-fp-orange font-semibold">Aprendiz SENA</p>
-            </div>
-        </div>
-    </aside>
-
-    <div class="ml-56 flex-1 flex flex-col h-screen w-full relative">
+    <div class="ml-64 flex-1 flex flex-col h-screen w-full relative">
         
         <!-- Header con Buscador (Tarea 11) e Ícono del Carrito con Contador (Tarea 13) -->
         <header class="h-16 bg-white/90 backdrop-blur-md border-b border-gray-200/60 flex items-center justify-between px-8 sticky top-0 z-10 w-full">

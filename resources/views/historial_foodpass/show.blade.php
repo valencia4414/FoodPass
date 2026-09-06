@@ -15,27 +15,10 @@
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
-    <!-- Sidebar (Mismo que el historial) -->
-    <aside class="sidebar w-56 h-full flex flex-col fixed left-0 top-0 text-white z-20">
-        <div class="p-6">
-            <h1 class="text-2xl font-bold tracking-tight">FoodPass</h1>
-            <p class="text-[10px] tracking-[0.2em] text-white/60 mt-1 uppercase">The Artisanal Ledger</p>
-        </div>
-        <nav class="flex-1 px-4 mt-6 space-y-1">
-            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">home</span>
-                <span class="text-sm font-medium">Inicio</span>
-            </a>
-            <a href="{{ route('historial') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-foodpass-orange/20 text-[#F97F2D] transition-colors">
-                <span class="material-symbols-outlined text-[20px]">history</span>
-                <span class="text-sm font-medium">Historial</span>
-            </a>
-            <!-- ... otros enlaces ... -->
-        </nav>
-    </aside>
+    @include('partials.sidebar')
 
     <!-- Main Content -->
-    <main class="flex-1 ml-56 flex flex-col h-full relative">
+    <main class="flex-1 ml-64 flex flex-col h-full relative">
         <!-- Header -->
         <header class="h-14 bg-white/80 backdrop-blur-md flex items-center justify-between px-8 border-b border-black/5 z-10 shrink-0">
             <div class="flex items-center gap-4">

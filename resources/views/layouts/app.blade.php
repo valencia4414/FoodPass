@@ -6,6 +6,7 @@
     <title>@yield('title', 'FoodPass')</title>
     <!-- Tailwind y Fuentes (RNF10 - Consistencia) -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
         /* Guía Visual (RNF10) */
@@ -18,7 +19,7 @@
     <!-- Sidebar Reutilizable (RNF06) -->
     @include('partials.sidebar')
 
-    <div class="flex-1 flex flex-col overflow-hidden">
+    <div class="ml-64 flex-1 flex flex-col overflow-hidden">
         <!-- Header Reutilizable (RNF06) -->
         @include('partials.header')
 

@@ -1,11 +1,11 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Historial - FoodPass</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #f0ffd8; color: #121f05; }
@@ -16,55 +16,10 @@
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
-    <!-- Sidebar -->
-    <aside class="sidebar w-56 h-full flex flex-col fixed left-0 top-0 text-white z-20">
-        <div class="p-6">
-            <h1 class="text-2xl font-bold tracking-tight">FoodPass</h1>
-            <p class="text-[10px] tracking-[0.2em] text-white/60 mt-1 uppercase">The Artisanal Ledger</p>
-        </div>
-
-        <nav class="flex-1 px-4 mt-6 space-y-1">
-            <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">home</span>
-                <span class="text-sm font-medium">Inicio</span>
-            </a>
-            <a href="{{ route('menu-digital') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">restaurant_menu</span>
-                <span class="text-sm font-medium">Menú</span>
-            </a>
-            <a href="{{ route('historial') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl bg-foodpass-orange/20 text-[#F97F2D] transition-colors">
-                <span class="material-symbols-outlined text-[20px]">history</span>
-                <span class="text-sm font-medium">Historial</span>
-            </a>
-            <a href="{{ route('canje') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">redeem</span>
-                <span class="text-sm font-medium">Canje</span>
-            </a>
-            <a href="{{ route('metodos-pago') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">payments</span>
-                <span class="text-sm font-medium">Pagos</span>
-            </a>
-            <a href="{{ route('perfil') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl text-white/70 hover:text-white hover:bg-white/10 transition-colors">
-                <span class="material-symbols-outlined text-[20px]">person</span>
-                <span class="text-sm font-medium">Perfil</span>
-            </a>
-        </nav>
-
-        <div class="p-4 border-t border-white/10">
-            <div class="flex items-center gap-3 px-2 py-2">
-                <div class="w-8 h-8 rounded-full bg-foodpass-orange flex items-center justify-center font-bold text-sm">
-                    {{ substr(auth()->user()->name, 0, 1) }}
-                </div>
-                <div class="flex-1 overflow-hidden">
-                    <p class="text-sm font-medium truncate">{{ auth()->user()->name }}</p>
-                    <p class="text-[11px] text-white/60 truncate">Membresía Gourmet</p>
-                </div>
-            </div>
-        </div>
-    </aside>
+    @include('partials.sidebar')
 
     <!-- Main Content -->
-    <main class="flex-1 ml-56 flex flex-col h-full relative">
+    <main class="flex-1 ml-64 flex flex-col h-full relative">
         <!-- Header -->
         <header class="h-14 bg-white/80 backdrop-blur-md flex items-center justify-between px-8 border-b border-black/5 z-10 shrink-0">
             <div class="w-96 relative">

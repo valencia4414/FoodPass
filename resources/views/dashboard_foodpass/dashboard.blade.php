@@ -90,49 +90,7 @@
     </style>
 </head>
 <body class="bg-surface text-on-background">
-<!-- SideNavBar Shell -->
-<aside class="hidden lg:flex flex-col z-40 h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-[#273517] dark:bg-[#121f05] shadow-2xl font-['Plus_Jakarta_Sans'] tracking-wide">
-<div class="p-8">
-<h1 class="text-2xl font-bold text-white mb-1">FoodPass</h1>
-<p class="text-white/50 text-xs uppercase tracking-widest font-bold">The Artisanal Ledger</p>
-</div>
-<nav class="flex-1 px-4 space-y-2">
-<!-- Active State: Inicio -->
-<a class="flex items-center gap-3 bg-[#F97F2D] text-white rounded-full px-4 py-3 mx-2 active:scale-95 transition-all duration-200" href="{{ route('dashboard') }}">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
-<span class="font-semibold">Inicio</span>
-</a>
-<a class="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 mx-2 rounded-full transition-all duration-200" href="{{ route('menu-digital') }}">
-<span class="material-symbols-outlined">restaurant_menu</span>
-<span class="font-semibold">Menú</span>
-</a>
-<a class="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 mx-2 rounded-full transition-all duration-200" href="{{ route('historial') }}">
-<span class="material-symbols-outlined">history</span>
-<span class="font-semibold">Historial</span>
-</a>
-<a class="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 mx-2 rounded-full transition-all duration-200" href="{{ route('canje') }}">
-<span class="material-symbols-outlined">qr_code_scanner</span>
-<span class="font-semibold">Canje</span>
-</a>
-<a class="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 mx-2 rounded-full transition-all duration-200" href="{{ route('metodos-pago') }}">
-<span class="material-symbols-outlined">payments</span>
-<span class="font-semibold">Pagos</span>
-</a>
-<a class="flex items-center gap-3 text-white/70 hover:text-white hover:bg-white/10 px-4 py-3 mx-2 rounded-full transition-all duration-200" href="{{ route('perfil') }}">
-<span class="material-symbols-outlined">person</span>
-<span class="font-semibold">Perfil</span>
-</a>
-</nav>
-<div class="mt-auto p-6 border-t border-white/5">
-<div class="flex items-center gap-3 px-2 py-3 rounded-xl bg-white/5">
-<img alt="User avatar" class="w-10 h-10 rounded-full bg-white/10" data-alt="close-up portrait of a professional chef smiling in a sunlit artisanal kitchen setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCK2kvhmJRqp5doaqOjTkpHFjMq2Ymks740ZRok0JSFoTW0HlxUzQ7-tCv60Vz8SP4Y20iDN7tmI_sRgXY1ZaU6Xuar7aODMQDJk0grTzJOBvOHWoEZJCpvfQwXlUOwJjhyatytrc-Dht6bIgW_oUzkLew64OE9WuJMK1nXWwy6iB8BmG2Xslyuor4aW06wxf0MDuEQ6xbq0ewpJJaXwCX4e1uqS_GmpNczkEBfccYDyvBuXH4fH7SX9IEhluDVNcUfNpiP6XH5z9o"/>
-<div class="overflow-hidden">
-<p class="text-white font-bold truncate">{{ auth()->user()->name }}</p>
-<p class="text-white/40 text-xs truncate">Premium Member</p>
-</div>
-</div>
-</div>
-</aside>
+@include('partials.sidebar')
 <!-- TopNavBar Shell -->
 <header class="fixed top-0 right-0 w-full lg:w-[calc(100%-16rem)] h-16 z-30 bg-white/80 dark:bg-[#121f05]/80 backdrop-blur-md shadow-[0px_20px_40px_rgba(18,31,5,0.06)] flex justify-between items-center px-6 transition-colors duration-300">
 <div class="flex items-center gap-4 flex-1">

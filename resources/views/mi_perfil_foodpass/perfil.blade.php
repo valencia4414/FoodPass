@@ -1,37 +1,6 @@
 @extends('layouts.app')
 
-<<<<<<< HEAD
 @section('title', 'FoodPass - Mi Perfil')
-=======
-<!-- ═══════════════ SIDEBAR (RNF06 - Reutilizable) ═══════════════ -->
-<aside class="w-56 bg-[#273517] text-white flex flex-col shrink-0 h-full overflow-y-auto">
-  <div class="px-6 pt-7 pb-5">
-    <h1 class="text-lg font-bold text-white leading-tight">FoodPass</h1>
-    <p class="text-white/40 text-[9px] uppercase tracking-widest font-bold mt-0.5">The Artisanal Ledger</p>
-  </div>
-  <nav class="flex-1 px-3 space-y-0.5">
-    <a href="{{ route('dashboard') }}" class="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 px-4 py-2.5 mx-1 rounded-full transition-all text-sm font-semibold">
-      <span class="material-symbols-outlined text-[20px]">home</span>Inicio
-    </a>
-    <a href="{{ route('menu-digital') }}" class="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 px-4 py-2.5 mx-1 rounded-full transition-all text-sm font-semibold">
-      <span class="material-symbols-outlined text-[20px]">restaurant_menu</span>Menú
-    </a>
-    <a href="{{ route('historial') }}" class="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 px-4 py-2.5 mx-1 rounded-full transition-all text-sm font-semibold">
-      <span class="material-symbols-outlined text-[20px]">history</span>Historial
-    </a>
-    <a href="{{ route('canje') }}" class="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 px-4 py-2.5 mx-1 rounded-full transition-all text-sm font-semibold">
-      <span class="material-symbols-outlined text-[20px]">redeem</span>Canje
-    </a>
-    <a href="{{ route('metodos-pago') }}" class="flex items-center gap-3 text-white/60 hover:text-white hover:bg-white/10 px-4 py-2.5 mx-1 rounded-full transition-all text-sm font-semibold">
-      <span class="material-symbols-outlined text-[20px]">payments</span>Pagos
-    </a>
-    <!-- ACTIVO -->
-    <a href="{{ route('perfil') }}" class="flex items-center gap-3 bg-[#F97F2D] text-white px-4 py-2.5 mx-1 rounded-full text-sm font-semibold">
-      <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1">person</span>Perfil
-    </a>
-  </nav>
-</aside>
->>>>>>> acab2ef7ff501e8ec4cc1a538a5222850f87a411
 
 @section('content')
 <div class="max-w-5xl mx-auto">
@@ -59,96 +28,13 @@
                     {{ auth()->user()->membresia ?? 'Básica' }}
                 </span>
                 <span class="text-xs text-gray-500 font-medium">
-                    Miembro desde: {{ ucfirst(auth()->user()->created_at->translatedFormat('F Y')) }}
+                    Miembro desde: {{ auth()->user()->created_at ? ucfirst(auth()->user()->created_at->translatedFormat('F Y')) : 'Reciente' }}
                 </span>
             </div>
             @if(auth()->user()->fecha_renovacion_membresia)
             <p class="text-xs text-gray-500 font-medium">Renovación: {{ \Carbon\Carbon::parse(auth()->user()->fecha_renovacion_membresia)->format('d/m/Y') }}</p>
             @endif
         </div>
-<<<<<<< HEAD
-=======
-      </div>
-
-      <!-- ── GRID CONTENIDO (RNF03 - Responsivo) ── -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
-        <!-- COLUMNA FORMULARIO (Punto 4: El Formulario Perfecto) -->
-        <div class="lg:col-span-2">
-          <div class="bg-white rounded-2xl p-7 shadow-sm border border-gray-100">
-            <h3 class="text-lg font-bold text-[#121f05] mb-6">Editar Información Personal</h3>
-
-            <!-- RNF05: Token CSRF -->
-            <form action="{{ route('perfil.update') }}" method="POST" id="form-perfil">
-                @csrf
-                @method('PUT')
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <!-- Campo Nombre (RNF01) -->
-                    <div class="space-y-1">
-                        <label for="name" class="block text-[11px] font-bold uppercase tracking-widest text-[#574237]">Nombre Completo</label>
-                        <input type="text" name="name" id="name" value="{{ old('name', auth()->user()->name) }}" placeholder="Ej: Juan Pérez" 
-                               class="w-full bg-gray-50 border-gray-200 rounded-xl text-sm focus:ring-[#F97F2D] focus:border-[#F97F2D] @error('name') border-red-500 @enderror">
-                        @error('name') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <!-- Campo Email (RNF01) -->
-                    <div class="space-y-1">
-                        <label for="email" class="block text-[11px] font-bold uppercase tracking-widest text-[#574237]">Correo Electrónico</label>
-                        <input type="email" name="email" id="email" value="{{ old('email', auth()->user()->email) }}" placeholder="usuario@foodpass.com" 
-                               class="w-full bg-gray-50 border-gray-200 rounded-xl text-sm focus:ring-[#F97F2D] focus:border-[#F97F2D] @error('email') border-red-500 @enderror">
-                        @error('email') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
-                    </div>
-
-                    <!-- Campo Contraseña (RNF01) -->
-                    <div class="space-y-1 md:col-span-2">
-                        <label for="password" class="block text-[11px] font-bold uppercase tracking-widest text-[#574237]">Nueva Contraseña (Opcional)</label>
-                        <input type="password" name="password" id="password" placeholder="Mínimo 8 caracteres para cambiar" 
-                               class="w-full bg-gray-50 border-gray-200 rounded-xl text-sm focus:ring-[#F97F2D] focus:border-[#F97F2D] @error('password') border-red-500 @enderror">
-                        @error('password') <p class="text-red-500 text-[10px] mt-1">{{ $message }}</p> @enderror
-                    </div>
-                </div>
-
-                <!-- Botón con Feedback (RNF07) -->
-                <div class="mt-8">
-                    <button type="submit" id="btn-save" class="w-full bg-[#F97F2D] text-white font-bold text-sm py-3.5 rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-[#F97F2D]/20 transition-all hover:bg-[#e06d20]">
-                        <span id="btn-text">Guardar Cambios</span>
-                        <div id="btn-spinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                    </button>
-                </div>
-            </form>
-          </div>
-        </div>
-
-        <!-- COLUMNA DERECHA (Puntos y Resumen) -->
-        <div class="space-y-5">
-          <div class="bg-[#273517] rounded-2xl p-6 text-white shadow-md">
-            <span class="text-[10px] font-bold text-white/60 uppercase tracking-widest">PUNTOS ACUMULADOS</span>
-            <p class="text-4xl font-extrabold mt-1">4,850 <span class="text-sm text-white/40">FP</span></p>
-          </div>
-
-          <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-            <span class="text-[10px] font-bold text-[#574237] uppercase tracking-widest">PEDIDOS TOTALES</span>
-            <p class="text-4xl font-extrabold text-[#121f05] mt-1">128</p>
-          </div>
-
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="w-full flex items-center justify-center gap-2 bg-white border border-gray-100 text-gray-500 font-bold text-xs py-3.5 rounded-xl hover:bg-red-50 hover:text-red-600 transition-colors">
-              <span class="material-symbols-outlined text-[18px]">logout</span>Cerrar sesión
-            </button>
-          </form>
-
-          <a href="{{ route('privacidad') }}" class="block text-center text-xs font-semibold text-[#d85f18] hover:underline">Política de privacidad y derechos</a>
-          <form method="POST" action="{{ route('cuenta.destroy') }}" onsubmit="return confirm('Esta acción eliminará tu cuenta y tus datos personales. ¿Deseas continuar?');">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="w-full border border-red-200 bg-white py-3 text-xs font-bold text-red-600 rounded-xl hover:bg-red-50">Eliminar mi cuenta</button>
-          </form>
-        </div>
-
-      </div>
->>>>>>> acab2ef7ff501e8ec4cc1a538a5222850f87a411
     </div>
 
     <!-- ── GRID CONTENIDO ── -->
