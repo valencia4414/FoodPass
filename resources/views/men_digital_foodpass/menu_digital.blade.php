@@ -264,8 +264,40 @@
             </section>
         </main>
     </div>
+    </div>
+    <!-- Spinner de carga inicial (visible por defecto) -->
+    <div id="loading-spinner" class="text-center my-4">
+      <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Cargando...</span>
+      </div>
+       <p class="mt-2 text-muted">{{ __('menu.cargando') }}</p>
+   </div>
+   </div>
+    <!-- Contenedor del contenido (oculto por defecto) -->
+   <div id="contenido-menu" style="display: none;">
+      <!-- Aquí se insertarán las tarjetas de platillos -->
+    </div>
+    
 
-    <!-- TAREA 12: MODAL DE DETALLE DEL PLATILLO -->
+      <!-- Mensaje de error (oculto por defecto) -->
+   <div id="mensaje-error" class="alert alert-warning" style="display: none;">
+
+   </div>
+   <!-- Ejemplo de control de estado para un Modal de platillo -->
+<div x-data="{ open: false, platilloSeleccionado: '' }">
+    <button @click="open = true; platilloSeleccionado = 'Hamburguesa'" class="btn btn-info">
+        Ver Detalle
+    </button>
+
+    <!-- Modal reactivo con Alpine.js -->
+    <div x-show="open" class="modal-backdrop" style="display: none;">
+        <div class="modal-content p-4 bg-white rounded shadow">
+            <h3>Detalle de <span x-text="platilloSeleccionado"></span></h3>
+            <button @click="open = false" class="btn btn-secondary mt-3">Cerrar</button>
+        </div>
+    </div>
+</div>
+     <!-- TAREA 12: MODAL DE DETALLE DEL PLATILLO -->
     <div x-show="modalDetalle" 
          x-cloak 
          class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
