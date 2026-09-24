@@ -91,7 +91,7 @@
             <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                 <div class="lg:col-span-2 relative rounded-3xl overflow-hidden h-64 shadow-md group">
                     @if($platilloHero)
-                        <img src="https://picsum.photos/seed/{{ Str::slug($platilloHero->nombre) }}/1200/600"
+                        <img src="{{ asset('img/imagen (1).jpg') }}"
                             alt="{{ $platilloHero->nombre }}" loading="lazy"
                             class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/50 to-transparent"></div>
@@ -174,14 +174,19 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
                     @forelse($platillos as $platillo)
+                        @php
+                            // Usa las 12 imágenes descargadas en public/img antes de repetirlas.
+                            $imgIndex = (($loop->iteration - 1) % 12) + 1;
+                            $imgPath = asset("img/imagen ($imgIndex).jpg");
+                        @endphp
                         <div x-show="cumpleFiltro('{{ $platillo->categoria }}', '{{ strtolower($platillo->nombre) }}', '{{ strtolower($platillo->descripcion) }}')"
                             class="bg-white rounded-3xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all flex flex-col justify-between relative group">
 
                             <!-- Tarea 12: Abrir modal al tocar la imagen -->
                             <div class="relative w-full h-40 rounded-2xl overflow-hidden mb-3 cursor-pointer"
-                                @click="abrirDetalle({ id: {{ $platillo->id }}, nombre: '{{ addslashes($platillo->nombre) }}', descripcion: '{{ addslashes($platillo->descripcion) }}', precio: {{ $platillo->precio }}, categoria: '{{ $platillo->categoria }}', ingredientes: '{{ addslashes($platillo->ingredientes ?? '') }}', imagen: '{{ $platillo->imagen }}', disponible: {{ $platillo->disponible ? 'true' : 'false' }} })">
+                                @click="abrirDetalle({ id: {{ $platillo->id }}, nombre: '{{ addslashes($platillo->nombre) }}', descripcion: '{{ addslashes($platillo->descripcion) }}', precio: {{ $platillo->precio }}, categoria: '{{ $platillo->categoria }}', ingredientes: '{{ addslashes($platillo->ingredientes ?? '') }}', imagen: '{{ $imgPath }}', disponible: {{ $platillo->disponible ? 'true' : 'false' }} })">
 
-                                <img src="{{ $platillo->imagen ? asset('storage/' . $platillo->imagen) : 'https://picsum.photos/seed/' . Str::slug($platillo->nombre) . '/400/300' }}"
+                                <img src="{{ $imgPath }}"
                                     alt="{{ $platillo->nombre }}" loading="lazy"
                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 {{ !$platillo->disponible ? 'grayscale opacity-60' : '' }}">
 
@@ -201,7 +206,7 @@
                             </div>
 
                             <div>
-                                <h3 @click="abrirDetalle({ id: {{ $platillo->id }}, nombre: '{{ addslashes($platillo->nombre) }}', descripcion: '{{ addslashes($platillo->descripcion) }}', precio: {{ $platillo->precio }}, categoria: '{{ $platillo->categoria }}', ingredientes: '{{ addslashes($platillo->ingredientes ?? '') }}', imagen: '{{ $platillo->imagen }}', disponible: {{ $platillo->disponible ? 'true' : 'false' }} })"
+                                <h3 @click="abrirDetalle({ id: {{ $platillo->id }}, nombre: '{{ addslashes($platillo->nombre) }}', descripcion: '{{ addslashes($platillo->descripcion) }}', precio: {{ $platillo->precio }}, categoria: '{{ $platillo->categoria }}', ingredientes: '{{ addslashes($platillo->ingredientes ?? '') }}', imagen: '{{ $imgPath }}', disponible: {{ $platillo->disponible ? 'true' : 'false' }} })"
                                     class="font-bold text-fp-darkgreen mb-1 line-clamp-1 cursor-pointer hover:text-fp-orange transition-colors">
                                     {{ $platillo->nombre }}
                                 </h3>
@@ -251,7 +256,7 @@
             <template x-if="platilloSeleccionado">
                 <div>
                     <div class="h-56 relative">
-                        <img :src="platilloSeleccionado.imagen ? '/storage/' + platilloSeleccionado.imagen : 'https://picsum.photos/seed/' + platilloSeleccionado.nombre + '/600/400'"
+                        <img :src="platilloSeleccionado.imagen"
                             class="w-full h-full object-cover">
                         <span
                             class="absolute bottom-3 left-4 px-3 py-1 bg-fp-orange text-white text-xs font-bold rounded-md uppercase"
